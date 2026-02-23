@@ -6,6 +6,7 @@ pipeline {
     }
     
     stages {
+        
         stage('Build Docker') {
             steps {
                 script {
@@ -35,6 +36,7 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'github-creds', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                         sh '''
+                        rm -rf cicd-demo-manifests-repo
                         git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/adithyaganesh999/cicd-demo-manifests-repo.git
                         cd cicd-demo-manifests-repo
                         sed -i "s|image:.*|image: adithyaganesh640/todo-app:${BUILD_NUMBER}|g" deploy/deploy.yaml
